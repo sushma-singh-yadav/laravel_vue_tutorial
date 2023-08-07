@@ -8,31 +8,35 @@
                     <div class="card-body mt-2">
                         <div class="row">
                             <div class="col-md-12">
-                                <form @submit.prevent="handleSubmit">
+                                <Form @submit="handleSubmit" :validation-schema="schema">
                                     <div class="form-group">
                                         <label>Name</label>
-                                        <input type="text" class="form-control" name="name" v-model="form.name"  required/>
+                                        <Field type="text" class="form-control" name="name" />
+                                        <ErrorMessage name="name" class="text-danger"/>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Email</label>
-                                        <input type="email" class="form-control" name="email" v-model="form.email"  required/>
+                                        <Field type="email" class="form-control" name="email"   />
+                                        <ErrorMessage name="email" class="text-danger"/>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Phone</label>
-                                        <input type="tel" class="form-control" name="phone" v-model="form.phone" required />
+                                        <Field type="tel" class="form-control" name="phone"   />
+                                        <ErrorMessage name="phone" class="text-danger"/>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Message</label>
-                                        <textarea class="form-control" name="message" v-model="form.message" required ></textarea>
+                                        <Field as="textarea" class="form-control" name="message"   />
+                                        <ErrorMessage name="message" class="text-danger"/>
                                     </div>
                                    
                                     <button class="btn btn-primary mt-2">
                                         Submit
                                     </button>
-                                </form>
+                                </Form>
                             </div>
                         </div>
                     </div>
@@ -43,24 +47,37 @@
 </template>
 
 <script>
+import { Form, Field, ErrorMessage } from 'vee-validate';
+import * as yup from 'yup';
+import axios from 'axios';
+
 export default {
+    components: { Form, Field, ErrorMessage },
     mounted() {
         console.log("Component mounted.");
     },
     data() {
+        const schema = yup.object({
+            name: yup.string().required(),
+            email:  yup.string().required().email(),
+            phone:  yup.string().required(),
+            message:  yup.string().required(),
+        });
         return {
-           form:{
-               name:'',
-               email:'',
-               phone:'',
-               message:''
-           }
+            schema
         };
     },
     methods: {
-        handleSubmit()
+        handleSubmit(values)
         {
-            console.log(this.form);
+            console.log(values);
+            //need to submit form
+            axios.post('http://localhost:8001/api/contact-form-save', values).then(res =>{
+                console.log('res');
+                console.log(res);
+            }).catch(err => {
+                console.log(err);
+            })
         }
     }
 };
