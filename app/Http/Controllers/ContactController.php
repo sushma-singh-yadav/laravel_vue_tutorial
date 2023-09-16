@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Requests\ContactRequest;
 
 class ContactController extends Controller
 {
@@ -14,6 +15,14 @@ class ContactController extends Controller
     public function index()
     {
         //
+        $contactList = Contact::all();
+
+        if(!empty($contactList))
+        {
+            return response()->json(['status'=>200, 'message' => 'Contact List', 'data' => $contactList],Response::HTTP_OK);
+        } else {
+            return response()->json(['status'=>422, 'message' => 'No Data Found', 'data' => []],Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 
     /**
@@ -40,6 +49,7 @@ class ContactController extends Controller
         } else {
             return response()->json(['status'=> 422, 'message' => 'Unable to save', 'data' => []]);
         }
+
     }
 
     /**

@@ -8,7 +8,7 @@
                     <div class="card-body mt-2">
                         <div class="row">
                             <div class="col-md-12">
-                                <Form @submit="handleSubmit" :validation-schema="schema">
+                                <Form @submit="handleSubmitEvent" :validation-schema="schema">
                                     <div class="form-group">
                                         <label>Name</label>
                                         <Field type="text" class="form-control" name="name" />
@@ -68,15 +68,27 @@ export default {
         };
     },
     methods: {
-        handleSubmit(values)
+        handleSubmitEvent(values, actions)
         {
             console.log(values);
+            console.log(actions);
             //need to submit form
             axios.post('http://localhost:8001/api/contact-form-save', values).then(res =>{
                 console.log('res');
                 console.log(res);
             }).catch(err => {
                 console.log(err);
+                let formErrors = err.response.data;
+                let nameErr = (formErrors.hasOwnProperty('name')) ? formErrors.name[0] :'';
+                let emailErr = (formErrors.hasOwnProperty('email')) ? formErrors.email[0] :'';
+                let phoneErr = (formErrors.hasOwnProperty('phone')) ? formErrors.phone[0] :'';
+                let messageErr = (formErrors.hasOwnProperty('message')) ? formErrors.message[0] :'';
+                actions.setErrors({
+                    name: nameErr,
+                    email: emailErr,
+                    phone: phoneErr,
+                    message: messageErr,
+                })
             })
         }
     }

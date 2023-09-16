@@ -20,3 +20,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('contact-form-save', [ContactController::class, 'store']);
+Route::get('contact-list', [ContactController::class, 'index']);
