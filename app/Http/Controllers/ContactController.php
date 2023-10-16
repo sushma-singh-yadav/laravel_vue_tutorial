@@ -55,9 +55,15 @@ class ContactController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Contact $contact)
     {
         //
+        if(!empty($contact))
+        {
+            return response()->json(['status'=> 200, 'message' => 'Contact details', 'data' => $contact]);
+        } else {
+            return response()->json(['status'=> 422, 'message' => 'Unable to get details', 'data' => []]);
+        }
     }
 
     /**
@@ -71,16 +77,32 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ContactRequest $request, Contact $contact)
     {
         //
+        $inputArr = $request->validated();
+       $result = $contact->update($inputArr);
+       if($result)
+       {
+           return response()->json(['status'=> 200, 'message' => 'Contact successfully updated', 'data' => []]);
+       } else {
+           return response()->json(['status'=> 422, 'message' => 'Unable to update contact', 'data' => []]);
+       }
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Contact $contact)
     {
         //
+       $result = $contact->delete();
+       if($result)
+       {
+           return response()->json(['status'=> 200, 'message' => 'Contact successfully deleted', 'data' => []]);
+       } else {
+           return response()->json(['status'=> 422, 'message' => 'Unable to delete contact', 'data' => []]);
+       }
     }
 }

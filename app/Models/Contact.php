@@ -10,4 +10,6 @@ class Contact extends Model
     use HasFactory;
 
     protected $table = 'contact';
+
+    protected $guarded = [];
 }
