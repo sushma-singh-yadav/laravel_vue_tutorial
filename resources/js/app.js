@@ -9,10 +9,6 @@ import { createApp } from 'vue';
 // import ExampleComponent from './components/ExampleComponent.vue';
 import AppComponent from './App.vue';
 import router from './router/index';
-import VueToast from 'vue-toast-notification';
-import 'vue-toast-notification/dist/theme-bootstrap.css';
-import 'sweetalert2/src/sweetalert2.scss'
-
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
  * registering components with the application instance so they are ready
@@ -46,9 +42,5 @@ const app = createApp({
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
 app.use(router);
-
-app.use(VueToast,{
-    position:'top'
-});
 app.mount('#app');
 

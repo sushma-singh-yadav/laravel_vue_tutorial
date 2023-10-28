@@ -18,9 +18,3 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
-Route::post('contact-form-save', [ContactController::class, 'store']);
-Route::get('contact-list', [ContactController::class, 'index']);
-Route::get('contact-edit/{contact}', [ContactController::class, 'show']);
-Route::post('contact-edit-save/{contact}', [ContactController::class, 'update']);
-Route::delete('contact-delete/{contact}', [ContactController::class, 'destroy']);
