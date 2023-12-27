@@ -26,16 +26,12 @@ class ContactRequest extends FormRequest
     {
         return [
             //
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required|numeric',
-            'message' => 'required|min:10'
+            'inputName' => 'required'
         ];
     }
-
     public function failedValidation(Validator $validator)
     {
-        $response = new Response($validator->errors(), 422);
+        $response = new Response($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
 
         throw new ValidationException($validator, $response);
     }
