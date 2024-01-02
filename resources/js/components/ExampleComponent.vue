@@ -3,16 +3,14 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card mt-2">
-                    <div class="card-header">Ref In Vue Js</div>
+                    <div class="card-header">Watchers In Vue Js</div>
 
                     <div class="card-body mt-2">
                         <div class="row">
-                            <div class="col-md-12">
-                                <form @submit="(e) => handleFormSubmit(e)">
-                                <input type="text" class="form-control mb-2" ref="textField" @change="checkRequired()"/>
-                                <input type="number" class="form-control mb-2" ref="numberField"/>
-                                <button type="submit" class="form-control btn btn-primary" >Submit</button>
-                                </form>
+                            <div class="col-md-12" v-for="product in productList">
+                                <div class="form-group">
+                                    <input placeholder="Product" type="text" name="product" v-model="product.name" class="form-control"/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -26,27 +24,37 @@
 export default {
     data() {
         return {
-            
+            productList:[
+                {
+                    id : 1,
+                    name: 'Product 1'
+                },
+                {
+                    id : 2,
+                    name: 'Product 2'
+                }
+            ]
         }
     },
-    mounted() {
-        console.log(this.$refs);
+    watch:{
+        // productList(value, oldValue)
+        // {
+        //     console.log('watch executed')
+        //     console.log('old ', oldValue)
+        //     console.log('value ', value)
+        // }
+        productList: {
+            handler: function (value, oldValue)
+            {
+                console.log('watch executed')
+            console.log('old ', oldValue)
+            console.log('value ', value)
+            },
+            deep:true
+        }
     },
     methods: {
-        checkRequired()
-        {
-            console.log('before ' + this.$refs.numberField.required);
-            this.$refs.numberField.required = true;
-            this.$refs.numberField.style.border = "1px solid red";
-            console.log('after ' + this.$refs.numberField.required);
-        },
-        handleFormSubmit(e)
-        {
-            e.preventDefault();
-            
-            console.log(this.$refs.textField.value);
-            console.log(this.$refs.numberField.value);
-        }
+        
     }
 };
 </script>
