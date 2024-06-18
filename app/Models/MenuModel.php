@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Contact extends Model
+class MenuModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'contact';
+    protected $table = 'menus';
 
     protected $guarded = [];
 }

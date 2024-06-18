@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\ContactController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,8 +18,4 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('contact-form-save', [ContactController::class, 'store']);
-Route::get('contact-list', [ContactController::class, 'index']);
-Route::get('contact-edit/{contact}', [ContactController::class, 'show']);
-Route::post('contact-edit-save/{contact}', [ContactController::class, 'update']);
-Route::delete('contact-delete/{contact}', [ContactController::class, 'destroy']);
+Route::get('menu-list', [MenuController::class, 'index']);

@@ -1,27 +1,29 @@
 import { createRouter, createWebHistory } from "vue-router";
 import ExampleComponent from '../components/ExampleComponent.vue';
 import AboutComponent from '../components/AboutComponent.vue';
-import ContactListComponent from '../views/ContactListComponent.vue';
-import ContactEditComponent from '../views/ContactEditComponent.vue';
+import ContactComponent from '../components/ContactComponent.vue';
 
 const routes = [
     {
+        name: 'Home',
         path: '/',
         component: ExampleComponent
     },
     {
+        name: 'About',
         path: '/about',
         component: AboutComponent
     },
     {
-        name: 'contact-list',
-        path: '/contact-list',
-        component: ContactListComponent
+        name: 'Contact',
+        path: '/contact',
+        component: ContactComponent
     },
     {
-        path: '/contact-edit/:id',
-        component: ContactEditComponent
-    }
+        name: 'Services',
+        path: '/contact',
+        component: ContactComponent
+    },
 ];
 
 const router = createRouter({
