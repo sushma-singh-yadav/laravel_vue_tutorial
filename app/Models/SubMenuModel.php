@@ -5,16 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MenuModel extends Model
+class SubMenuModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'menus';
+    protected $table = 'sub_menus';
 
     protected $guarded = [];
-
-    public function submenu()
-    {
-        return $this->hasmany(SubMenuModel::class,"menu_id");
-    }
 }

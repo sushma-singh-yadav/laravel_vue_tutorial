@@ -14,7 +14,7 @@ class MenuController extends Controller
     public function index()
     {
         //
-        $menuList = MenuModel::all();
+        $menuList = MenuModel::with('submenu')->get();
 
         if(!empty($menuList))
         {

@@ -9,12 +9,22 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav">
                           <ul class="navbar-nav">
-                            <!-- <li class="nav-item active">
-                              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                            </li> -->
-                            <li class="nav-item" v-for="(menu,i) in menus" :key="i" :menu="menu">
-                              <router-link class="nav-link" :to="{name: menu.menu_name}">{{menu.menu_name}}</router-link>
+                            <li class="nav-item" v-for="(menu,i) in menus" :key="i">      
+                              <div class="dropdown" v-if="menu.submenu.length > 0">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{menu.menu_name}}
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <li v-for="(submenu,j) in menu.submenu" :key="j">
+                                      <router-link class="dropdown-item" :to="{name: submenu.submenu_name}">{{submenu.submenu_name}}</router-link>
+                                    </li>
+                                </ul>
+                              </div>
+                              <div class="dropdown" v-else>
+                                <router-link class="nav-link" :to="{name: menu.menu_name}">{{menu.menu_name}}</router-link>
+                              </div>
                             </li>
+                              
                           </ul>
                         </div>
                       </nav>
@@ -43,7 +53,7 @@ export default {
                 console.log(res);
                 this.menus = res.data.data;
             }).catch((err)=>{
-                console.log('error while fetching menu');
+                console.log(err);
             })
         }
     }
