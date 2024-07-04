@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MenuModel;
+use App\Models\ContactModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class MenuController extends Controller
+class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,11 +14,11 @@ class MenuController extends Controller
     public function index()
     {
         //
-        $menuList = MenuModel::with('submenu')->get();
+        $contactList = ContactModel::all();
 
-        if(!empty($menuList))
+        if(!empty($contactList))
         {
-            return response()->json(['status'=>200, 'message' => 'Menu List', 'data' => $menuList],Response::HTTP_OK);
+            return response()->json(['status'=>200, 'message' => 'Contact List', 'data' => $contactList],Response::HTTP_OK);
         } else {
             return response()->json(['status'=>422, 'message' => 'No Data Found', 'data' => []],Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -38,13 +38,12 @@ class MenuController extends Controller
     public function store(Request $request)
     {
         //
-
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Request $id)
+    public function show(string $id)
     {
         //
     }
@@ -60,7 +59,7 @@ class MenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MenuModel $menu)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -68,7 +67,7 @@ class MenuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MenuModel $user)
+    public function destroy(string $id)
     {
         //
     }

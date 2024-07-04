@@ -11,7 +11,8 @@ import AppComponent from './App.vue';
 import router from './router/index';
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-bootstrap.css';
-import 'sweetalert2/src/sweetalert2.scss'
+import 'sweetalert2/src/sweetalert2.scss';
+// import '../css/datatables.min.css'
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
