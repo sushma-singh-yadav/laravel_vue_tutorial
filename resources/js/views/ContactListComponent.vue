@@ -1,17 +1,17 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class=" mt-2 p-4">
                     <h1 class="h1 text-center">Contact List</h1>
                     
-                    <table class="table table-bordered display" id="contactTable" >
+                    <table class="table table-bordered row-border" id="contactTable" >
                         <thead class="table-primary">
                             <tr>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Message</th>
+                            <th class="emailStyle">Email</th>
+                            <th class="phoneStyle dt-head-right">Phone</th>
+                            <th class="messageStyle">Message</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -41,8 +41,8 @@ onMounted(()=>{
         },
         columns:[
             { data: "name" },
-            { data: "email" },
-            { data: "phone" },
+            { data: "email"},
+            { data: "phone", className: "dt-body-right" },
             { data: "message" },
             { data: "actions",
                 render: function (params) {
@@ -56,3 +56,14 @@ onMounted(()=>{
 })
 
 </script>
+<style>
+.theadBg{
+    color: black;
+}
+.messageStyle{
+    width:40%;
+}
+.emailStyle{
+width: 15%;
+}
+</style>
