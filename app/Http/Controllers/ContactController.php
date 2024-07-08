@@ -14,11 +14,21 @@ class ContactController extends Controller
     public function index()
     {
         //
-        $contactList = ContactModel::all();
+        $contactList = ContactModel::select('*');
+        $recordsTotal = $contactList->count();
+        $recordsFiltered = $contactList->count();
 
+        $contactList = $contactList->offset(request()->start)->limit(request()->length);
+        $contactList= $contactList->get();
         if(!empty($contactList))
         {
-            return response()->json(['status'=>200, 'message' => 'Contact List', 'data' => $contactList],Response::HTTP_OK);
+            return response()->json([
+                'status'=>200, 
+                'message' => 'Contact List', 
+                'data' => $contactList,
+                'recordsTotal' => $recordsTotal,
+                'recordsFiltered' => $recordsFiltered,
+                ],Response::HTTP_OK);
         } else {
             return response()->json(['status'=>422, 'message' => 'No Data Found', 'data' => []],Response::HTTP_UNPROCESSABLE_ENTITY);
         }

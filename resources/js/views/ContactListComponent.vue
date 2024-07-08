@@ -35,6 +35,8 @@ var dataSource = ref([]);
 
 onMounted(()=>{
     var table = $('#contactTable').DataTable({
+        processing: true,
+        serverSide:true,
         ajax:{
             url:'http://localhost:8000/api/contact-list',
             dataSource: 'data'
