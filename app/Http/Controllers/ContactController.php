@@ -15,11 +15,17 @@ class ContactController extends Controller
     {
         //
         $contactList = ContactModel::select('*');
-        $recordsTotal = $contactList->count();
-        $recordsFiltered = $contactList->count();
+        $recordsTotal = $contactList->count();   //total records
 
-        $contactList = $contactList->offset(request()->start)->limit(request()->length);
-        $contactList= $contactList->get();
+        $searchVal = request()->search['value'];
+        if($searchVal != '')
+        {        
+            $contactList = $contactList->where('name','like',"%$searchVal%");  ///search in name
+            $contactList = $contactList->orWhere('email','like',"%$searchVal%");  ///search in email
+        }
+        $recordsFiltered = $contactList->count();  // filtered coubt
+        $contactList = $contactList->offset(request()->start)->limit(request()->length); ///pagination
+        $contactList = $contactList->get();
         if(!empty($contactList))
         {
             return response()->json([
