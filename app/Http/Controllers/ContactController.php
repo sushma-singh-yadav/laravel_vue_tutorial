@@ -18,13 +18,29 @@ class ContactController extends Controller
         $recordsTotal = $contactList->count();   //total records
 
         $searchVal = request()->search['value'];
+        $orderColumn = request()->order;
+        $columns = request()->columns;
         if($searchVal != '')
         {        
             $contactList = $contactList->where('name','like',"%$searchVal%");  ///search in name
             $contactList = $contactList->orWhere('email','like',"%$searchVal%");  ///search in email
         }
+        foreach($columns as $col)
+        {
+            $col_name = $col['name'];
+            $col_search_val = $col['search']['value'];
+            if($col_search_val != '')
+            {
+            $contactList = $contactList->where($col_name,'like',"%$col_search_val%");  ///search
+            }
+        }
         $recordsFiltered = $contactList->count();  // filtered coubt
         $contactList = $contactList->offset(request()->start)->limit(request()->length); ///pagination
+        foreach($orderColumn as $order)
+        {
+            $orderColumnDir = $order['dir'];
+            $contactList = $contactList->orderBy($order['name'], $orderColumnDir);
+        }
         $contactList = $contactList->get();
         if(!empty($contactList))
         {
