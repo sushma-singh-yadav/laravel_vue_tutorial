@@ -58,12 +58,14 @@ onMounted(()=>{
     
                     // Event listener for user input
                     input.addEventListener('keyup', (event) => {
-                        if(event.keyCode == 13)
-                        {
+                        // if(event.keyCode == 13)
+                        // {
+                            console.log(column.search());
+                            console.log('vslue',this.value);
                             if (column.search() !== this.value) {
                                 column.search(input.value).draw();
                             }
-                        }
+                       // }
                     });
                 });
         },
