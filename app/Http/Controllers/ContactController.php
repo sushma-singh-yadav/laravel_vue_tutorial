@@ -35,7 +35,11 @@ class ContactController extends Controller
             }
         }
         $recordsFiltered = $contactList->count();  // filtered coubt
-        $contactList = $contactList->offset(request()->start)->limit(request()->length); ///pagination
+        $pageLength = request()->length;
+        if($pageLength > 0)
+        {
+            $contactList = $contactList->offset(request()->start)->limit($pageLength); ///pagination
+        }
         foreach($orderColumn as $order)
         {
             $orderColumnDir = $order['dir'];

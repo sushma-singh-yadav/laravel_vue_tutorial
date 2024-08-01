@@ -76,6 +76,17 @@ onMounted(()=>{
             url:'http://localhost:8000/api/contact-list',
             dataSource: 'data'
         },
+        pageLength:20,
+        lengthMenu: [
+            10,
+            { 
+                label:'Twenty',
+                value:20 
+            },
+            { 
+                label:'All',
+                value:-1 
+            }],
         columns:[
             { 
                 data: "name",
