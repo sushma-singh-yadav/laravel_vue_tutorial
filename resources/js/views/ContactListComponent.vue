@@ -4,7 +4,24 @@
             <div class="col-md-12">
                 <div class=" mt-2 p-4">
                     <h1 class="h1 text-center">Contact List</h1>
-                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- Toggle column: <a class="toggle-vis" data-column="0">Name</a> - <a class="toggle-vis" data-column="1">Email</a> - <a class="toggle-vis" data-column="2">Phone</a> - <a class="toggle-vis" data-column="3">Message</a> - <a class="toggle-vis" data-column="4">Actions</a>  -->
+                        
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Select Column
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                                  <li><a class="dropdown-item" href="#" data-column="0">Name</a></li>
+                                  <li><a class="dropdown-item" href="#" data-column="1">Email</a></li>
+                                  <li><a class="dropdown-item" href="#" data-column="2">Phone</a></li>
+                                  <li><a class="dropdown-item" href="#" data-column="3">Message</a></li>
+                                  <li><a class="dropdown-item" href="#" data-column="4">Actions</a></li>
+                                </ul>
+                              </div>
+                        </div>
+                    </div>
                     <table class="table table-bordered row-border" id="contactTable" >
                         <thead class="table-primary">
                             <tr>
@@ -68,6 +85,31 @@ onMounted(()=>{
                        // }
                     });
                 });
+
+                document.querySelectorAll('a.toggle-vis').forEach((el) => {
+                    el.addEventListener('click', function (e) {
+                        e.preventDefault();
+                
+                        let columnIdx = e.target.getAttribute('data-column');   ///index - starts from 0
+                        let column = table.column(columnIdx);
+                
+                        // Toggle the visibility
+                        column.visible(!column.visible());
+                    });
+                });
+
+                document.querySelectorAll('a.dropdown-item').forEach((el) => {
+                    el.addEventListener('click', function (e) {
+                        e.preventDefault();
+                
+                        let columnIdx = e.target.getAttribute('data-column');   ///index - starts from 0
+                        let column = table.column(columnIdx);
+                
+                        // Toggle the visibility
+                        column.visible(!column.visible());
+                    });
+                });
+
         },
         processing: true,
         serverSide:true,
@@ -116,6 +158,8 @@ onMounted(()=>{
                 } },
         ]
     });
+
+
 })
 
 </script>
@@ -128,5 +172,8 @@ onMounted(()=>{
 }
 .emailStyle{
 width: 15%;
+}
+[type=button]{
+    background-color:grey;
 }
 </style>
