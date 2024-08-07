@@ -4,24 +4,7 @@
             <div class="col-md-12">
                 <div class=" mt-2 p-4">
                     <h1 class="h1 text-center">Contact List</h1>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <!-- Toggle column: <a class="toggle-vis" data-column="0">Name</a> - <a class="toggle-vis" data-column="1">Email</a> - <a class="toggle-vis" data-column="2">Phone</a> - <a class="toggle-vis" data-column="3">Message</a> - <a class="toggle-vis" data-column="4">Actions</a>  -->
-                        
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Select Column
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                                  <li><a class="dropdown-item" href="#" data-column="0">Name</a></li>
-                                  <li><a class="dropdown-item" href="#" data-column="1">Email</a></li>
-                                  <li><a class="dropdown-item" href="#" data-column="2">Phone</a></li>
-                                  <li><a class="dropdown-item" href="#" data-column="3">Message</a></li>
-                                  <li><a class="dropdown-item" href="#" data-column="4">Actions</a></li>
-                                </ul>
-                              </div>
-                        </div>
-                    </div>
+
                     <table class="table table-bordered row-border" id="contactTable" >
                         <thead class="table-primary">
                             <tr>
@@ -29,6 +12,7 @@
                             <th class="emailStyle">Email</th>
                             <th class="phoneStyle dt-head-right">Phone</th>
                             <th class="messageStyle">Message</th>
+                            <th class="messageStyle">Created</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -41,6 +25,7 @@
                             <th class="emailStyle">Email</th>
                             <th class="phoneStyle dt-head-right">Phone</th>
                             <th class="messageStyle">Message</th>
+                            <th class="messageStyle">Created</th>
                             <th>Actions</th>
                         </tr>
                         </tfoot>
@@ -53,6 +38,7 @@
 
 <script setup>
 import $ from 'jquery';
+import moment from 'moment';
 import axios from 'axios';
 import DataTable from 'datatables.net-dt';
 import { ref, onMounted } from 'vue';
@@ -85,31 +71,6 @@ onMounted(()=>{
                        // }
                     });
                 });
-
-                document.querySelectorAll('a.toggle-vis').forEach((el) => {
-                    el.addEventListener('click', function (e) {
-                        e.preventDefault();
-                
-                        let columnIdx = e.target.getAttribute('data-column');   ///index - starts from 0
-                        let column = table.column(columnIdx);
-                
-                        // Toggle the visibility
-                        column.visible(!column.visible());
-                    });
-                });
-
-                document.querySelectorAll('a.dropdown-item').forEach((el) => {
-                    el.addEventListener('click', function (e) {
-                        e.preventDefault();
-                
-                        let columnIdx = e.target.getAttribute('data-column');   ///index - starts from 0
-                        let column = table.column(columnIdx);
-                
-                        // Toggle the visibility
-                        column.visible(!column.visible());
-                    });
-                });
-
         },
         processing: true,
         serverSide:true,
@@ -118,7 +79,7 @@ onMounted(()=>{
             url:'http://localhost:8000/api/contact-list',
             dataSource: 'data'
         },
-        pageLength:20,
+        pageLength:10,
         lengthMenu: [
             10,
             { 
@@ -146,6 +107,13 @@ onMounted(()=>{
             { 
                 data: "message",
                 name: 'message'  
+            },
+            { 
+                data: "created_at",
+                name: 'created_at', 
+                render: function(data) {
+                    return moment(data).format('Do MMM YYYY')
+                } 
             },
             { 
                 data: "actions",

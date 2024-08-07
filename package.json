@@ -18,6 +18,8 @@
     "dependencies": {
         "datatables.net-dt": "^2.0.8",
         "jquery": "^3.7.1",
+        "moment": "^2.30.1",
+        "momentjs": "^2.0.0",
         "sweetalert2": "^11.3.10",
         "vee-validate": "^4.10.7",
         "vue-router": "^4.3.3",
