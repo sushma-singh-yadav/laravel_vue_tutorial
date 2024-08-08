@@ -5,30 +5,20 @@
                 <div class=" mt-2 p-4">
                     <h1 class="h1 text-center">Contact List</h1>
 
-                    <table class="table table-bordered row-border" id="contactTable" >
+                    <table class="table table-bordered row-border w-100" id="contactTable" >
                         <thead class="table-primary">
                             <tr>
-                            <th>Name</th>
-                            <th class="emailStyle">Email</th>
-                            <th class="phoneStyle dt-head-right">Phone</th>
-                            <th class="messageStyle">Message</th>
-                            <th class="messageStyle">Created</th>
-                            <th>Actions</th>
-                        </tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Message</th>
+                                <th>Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
                            
                         </tbody>
-                        <tfoot>
-                            <tr>
-                            <th>Name</th>
-                            <th class="emailStyle">Email</th>
-                            <th class="phoneStyle dt-head-right">Phone</th>
-                            <th class="messageStyle">Message</th>
-                            <th class="messageStyle">Created</th>
-                            <th>Actions</th>
-                        </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -45,79 +35,77 @@ import { ref, onMounted } from 'vue';
 
 var dataSource = ref([]);
 
+function format(d) {
+    console.log(d);
+    // `d` is the original data object for the row
+    return (
+        '<div>' +
+        '<p> <strong>Full name : </strong> '+ d.name +'</p>' +
+        '<p> <strong>Email : </strong> '+ d.email +'</p>' +
+        '<p> <strong>Phone : </strong> '+ d.phone +'</p>' +
+        '<p> <strong>Message : </strong> '+ d.message +'</p>' +
+        '</div>'
+    );
+}
+
 onMounted(()=>{
     var table = $('#contactTable').DataTable({
         initComplete: function () {
-            this.api()
-                .columns()
-                .every(function () {
-                    let column = this;
-                    let title = column.footer().textContent; //title 
-    
-                    // Create input element
-                    let input = document.createElement('input');
-                    input.placeholder = title;
-                    column.footer().replaceChildren(input);
-    
-                    // Event listener for user input
-                    input.addEventListener('keyup', (event) => {
-                        // if(event.keyCode == 13)
-                        // {
-                            console.log(column.search());
-                            console.log('vslue',this.value);
-                            if (column.search() !== this.value) {
-                                column.search(input.value).draw();
-                            }
-                       // }
-                    });
-                });
+            // Add event listener for opening and closing details
+            table.on('click', 'td.dt-control', function (e) {
+                let tr = e.target.closest('tr');
+                let row = table.row(tr);
+            
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                }
+                else {
+                    // Open this row
+                    row.child(format(row.data())).show();
+                }
+            });
         },
         processing: true,
         serverSide:true,
-        order: [[1,'desc'],[0,'asc']],
         ajax:{
             url:'http://localhost:8000/api/contact-list',
             dataSource: 'data'
         },
-        pageLength:10,
-        lengthMenu: [
-            10,
-            { 
-                label:'Twenty',
-                value:20 
-            },
-            { 
-                label:'All',
-                value:-1 
-            }],
+        order:[1,'asc'],
         columns:[
             { 
+                className: 'dt-control',
+                orderable: false,
+                data: null,
+                defaultContent: '',
+                width: '5%'
+            },
+            { 
                 data: "name",
-                name: 'name'
+                name: 'name',
+                width: '15%'
             },
             { 
                 data: "email",
-                name: 'email'
+                name: 'email',
+                width: '10%'
             },
             { 
                 data: "phone", 
                 className: "dt-body-right",
+                width: '15%',
                 name: 'phone' 
             },
             { 
                 data: "message",
-                name: 'message'  
-            },
-            { 
-                data: "created_at",
-                name: 'created_at', 
-                render: function(data) {
-                    return moment(data).format('Do MMM YYYY')
-                } 
+                name: 'message',
+                width: '40%',
             },
             { 
                 data: "actions",
                 name: 'actions', 
+                width: '15%',
                 render: function (params) {
                     var str ='';
                      str += '<button class="btn btn-primary">Edit</button>';
@@ -132,16 +120,5 @@ onMounted(()=>{
 
 </script>
 <style>
-.theadBg{
-    color: black;
-}
-.messageStyle{
-    width:40%;
-}
-.emailStyle{
-width: 15%;
-}
-[type=button]{
-    background-color:grey;
-}
+
 </style>
