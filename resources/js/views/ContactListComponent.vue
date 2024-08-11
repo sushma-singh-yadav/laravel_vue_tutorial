@@ -72,6 +72,8 @@ onMounted(()=>{
             url:'http://localhost:8000/api/contact-list',
             dataSource: 'data'
         },
+        rowId: 'id',
+        stateSave:true,
         order:[1,'asc'],
         columns:[
             { 
@@ -115,7 +117,9 @@ onMounted(()=>{
         ]
     });
 
-
+    table.on('requestChild.div', function(e,row){
+        row.child(format(row.data())).show();
+    })
 })
 
 </script>
