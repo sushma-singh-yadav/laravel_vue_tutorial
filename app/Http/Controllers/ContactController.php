@@ -20,6 +20,11 @@ class ContactController extends Controller
         $searchVal = request()->search['value'];
         $orderColumn = request()->order;
         $columns = request()->columns;
+        if(request()->has('filters'))
+        {
+            $filters = request()->filters;
+            $contactList = $contactList->whereBetween('created_at',[$filters['fromDate'],$filters['toDate']]);
+        }
         if($searchVal != '')
         {        
             $contactList = $contactList->where('name','like',"%$searchVal%");  ///search in name

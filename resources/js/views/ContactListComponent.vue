@@ -4,15 +4,26 @@
             <div class="col-md-12">
                 <div class=" mt-2 p-4">
                     <h1 class="h1 text-center">Contact List</h1>
-
+                    <hr>
+                    <div class="row mt-4 mb-4">
+                        <div class="col-md-5"></div>
+                        <div class="col-md-3">
+                            <input type="date" id="from_date" name="from_date" class="form-control" v-model="fromDate">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" id="to_date" name="to_date" class="form-control" v-model="toDate">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-primary" id="filterButton" @click="getFilters">Filter</button>
+                        </div>
+                    </div>
                     <table class="table table-bordered row-border w-100" id="contactTable" >
                         <thead class="table-primary">
                             <tr>
-                                <th></th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Message</th>
+                                <th>Created</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -34,55 +45,33 @@ import DataTable from 'datatables.net-dt';
 import { ref, onMounted } from 'vue';
 
 var dataSource = ref([]);
-
-function format(d) {
-    console.log(d);
-    // `d` is the original data object for the row
-    return (
-        '<div>' +
-        '<p> <strong>Full name : </strong> '+ d.name +'</p>' +
-        '<p> <strong>Email : </strong> '+ d.email +'</p>' +
-        '<p> <strong>Phone : </strong> '+ d.phone +'</p>' +
-        '<p> <strong>Message : </strong> '+ d.message +'</p>' +
-        '</div>'
-    );
-}
+var fromDate = ref('');
+var toDate = ref('');
+var table = ref();
 
 onMounted(()=>{
-    var table = $('#contactTable').DataTable({
+    table = $('#contactTable').DataTable({
         initComplete: function () {
-            // Add event listener for opening and closing details
-            table.on('click', 'td.dt-control', function (e) {
-                let tr = e.target.closest('tr');
-                let row = table.row(tr);
-            
-                if (row.child.isShown()) {
-                    // This row is already open - close it
-                    row.child.hide();
-                }
-                else {
-                    // Open this row
-                    row.child(format(row.data())).show();
-                }
-            });
         },
         processing: true,
-        serverSide:true,
+        serverSide: true,
         ajax:{
             url:'http://localhost:8000/api/contact-list',
-            dataSource: 'data'
+            dataSource: 'data',
+            data: function(params){
+                console.log(params);
+                if(fromDate.value != '' && toDate.value != '')
+                {
+                    let filters = {
+                        fromDate :fromDate.value,
+                        toDate :toDate.value,
+                    }
+                    params.filters = filters;
+                }
+            }
         },
-        rowId: 'id',
-        stateSave:true,
-        order:[1,'asc'],
+        order: [1,'asc'],
         columns:[
-            { 
-                className: 'dt-control',
-                orderable: false,
-                data: null,
-                defaultContent: '',
-                width: '5%'
-            },
             { 
                 data: "name",
                 name: 'name',
@@ -100,9 +89,12 @@ onMounted(()=>{
                 name: 'phone' 
             },
             { 
-                data: "message",
-                name: 'message',
-                width: '40%',
+                data: "created_at",
+                name: 'created_at',
+                width: '15%',
+                render: function(data){
+                    return moment(data).format('DD/MM/YYYY')
+                }
             },
             { 
                 data: "actions",
@@ -116,13 +108,20 @@ onMounted(()=>{
                 } },
         ]
     });
-
-    table.on('requestChild.div', function(e,row){
-        row.child(format(row.data())).show();
-    })
 })
 
+function getFilters()
+{
+    console.log(fromDate.value);
+    console.log(toDate.value);
+    if(fromDate.value != '' && toDate.value != '')
+    {
+        table.draw();
+    }
+}
 </script>
 <style>
-
+[type=button]{
+         background-color: #0d6efd;
+}
 </style>
