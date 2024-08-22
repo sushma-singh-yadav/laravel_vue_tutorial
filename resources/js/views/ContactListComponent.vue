@@ -4,19 +4,7 @@
             <div class="col-md-12">
                 <div class=" mt-2 p-4">
                     <h1 class="h1 text-center">Contact List</h1>
-                    <hr>
-                    <div class="row mt-4 mb-4">
-                        <div class="col-md-5"></div>
-                        <div class="col-md-3">
-                            <input type="date" id="from_date" name="from_date" class="form-control" v-model="fromDate">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="date" id="to_date" name="to_date" class="form-control" v-model="toDate">
-                        </div>
-                        <div class="col-md-1">
-                            <button type="button" class="btn btn-primary" id="filterButton" @click="getFilters">Filter</button>
-                        </div>
-                    </div>
+
                     <table class="table table-bordered row-border w-100" id="contactTable" >
                         <thead class="table-primary">
                             <tr>
@@ -45,8 +33,6 @@ import DataTable from 'datatables.net-dt';
 import { ref, onMounted } from 'vue';
 
 var dataSource = ref([]);
-var fromDate = ref('');
-var toDate = ref('');
 var table = ref();
 
 onMounted(()=>{
@@ -57,20 +43,41 @@ onMounted(()=>{
         serverSide: true,
         ajax:{
             url:'http://localhost:8000/api/contact-list',
-            dataSource: 'data',
-            data: function(params){
-                console.log(params);
-                if(fromDate.value != '' && toDate.value != '')
-                {
-                    let filters = {
-                        fromDate :fromDate.value,
-                        toDate :toDate.value,
-                    }
-                    params.filters = filters;
-                }
-            }
+            dataSource: 'data'
         },
         order: [1,'asc'],
+        dom: '<"top"i>rt<"bottom"flp><"clear">',
+        // layout:{
+        //     topStart: {
+        //         search:{
+        //             placeholder: 'Type search here'
+        //         }
+        //     },
+        //     topEnd:{
+        //         pageLength: {
+        //             menu: [10,20,30,40]
+        //         }
+        //     },
+        //     top:'info',
+        //     bottom:{
+        //         paging:{
+        //             buttons:3
+        //         },
+        //     },
+        //     bottomStart:null,
+        //     bottomEnd:null,
+        //     top2Start: function() {
+        //         let customText = document.createElement('div');
+        //         customText.innerHTML = "custom text";
+        //         return customText;
+        //     },
+        //     top2End:{
+        //         pageLength: {
+        //             menu: [10,20,30,40]
+        //         }
+        //     },
+        //     top2:'info',
+        // },
         columns:[
             { 
                 data: "name",
@@ -109,19 +116,26 @@ onMounted(()=>{
         ]
     });
 })
-
-function getFilters()
-{
-    console.log(fromDate.value);
-    console.log(toDate.value);
-    if(fromDate.value != '' && toDate.value != '')
-    {
-        table.draw();
-    }
-}
 </script>
 <style>
 [type=button]{
          background-color: #0d6efd;
+}
+div.dt-info {
+    text-align: center;
+}
+ 
+div.dt-search {
+    float: left;
+}
+ 
+div.dt-length {
+    float: right;
+}
+ 
+div.dt-paging {
+    clear: both;
+    text-align: center;
+    margin-top: 0.5em;
 }
 </style>
