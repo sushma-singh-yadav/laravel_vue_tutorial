@@ -12,6 +12,7 @@ import router from './router/index';
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-bootstrap.css';
 import 'sweetalert2/src/sweetalert2.scss';
+import 'datatables.net-buttons-dt/css/buttons.datatables.css';
 // import '../css/datatables.min.css'
 
 /**

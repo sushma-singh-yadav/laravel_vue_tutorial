@@ -16,10 +16,14 @@
         "vue": "^3.2.37"
     },
     "dependencies": {
+        "datatables.net-buttons": "^3.1.1",
+        "datatables.net-buttons-dt": "^3.1.1",
         "datatables.net-dt": "^2.0.8",
         "jquery": "^3.7.1",
+        "jszip": "^3.10.1",
         "moment": "^2.30.1",
         "momentjs": "^2.0.0",
+        "pdfmake": "^0.2.12",
         "sweetalert2": "^11.3.10",
         "vee-validate": "^4.10.7",
         "vue-router": "^4.3.3",

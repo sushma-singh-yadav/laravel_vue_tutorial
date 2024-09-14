@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ContactModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Requests\ContactRequest;
+use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
@@ -16,35 +18,8 @@ class ContactController extends Controller
         //
         $contactList = ContactModel::select('*');
         $recordsTotal = $contactList->count();   //total records
-
-        $searchVal = request()->search['value'];
-        $orderColumn = request()->order;
-        $columns = request()->columns;
-        if($searchVal != '')
-        {        
-            $contactList = $contactList->where('name','like',"%$searchVal%");  ///search in name
-            $contactList = $contactList->orWhere('email','like',"%$searchVal%");  ///search in email
-        }
-        foreach($columns as $col)
-        {
-            $col_name = $col['name'];
-            $col_search_val = $col['search']['value'];
-            if($col_search_val != '')
-            {
-            $contactList = $contactList->where($col_name,'like',"%$col_search_val%");  ///search
-            }
-        }
+        
         $recordsFiltered = $contactList->count();  // filtered coubt
-        $pageLength = request()->length;
-        if($pageLength > 0)
-        {
-            $contactList = $contactList->offset(request()->start)->limit($pageLength); ///pagination
-        }
-        foreach($orderColumn as $order)
-        {
-            $orderColumnDir = $order['dir'];
-            $contactList = $contactList->orderBy($order['name'], $orderColumnDir);
-        }
         $contactList = $contactList->get();
         if(!empty($contactList))
         {
@@ -73,7 +48,30 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $result = '';
+        $contactForm = $request->all();
+        Validator::validate($contactForm, [
+            'contactForm.*.name' =>'required',
+            'contactForm.*.email' =>'required',
+            'contactForm.*.phone' =>'required',
+            'contactForm.*.created_at' =>'required',
+        ]);
+        foreach($contactForm['contactForm'] as $contact)
+        {
+            $contactRes = ContactModel::insert($contact);
+            if($contactRes)
+            {
+                $result .= 'Inserted,\n';
+            } else {
+                $result .= 'Not Inserted,\n';
+            }   
+        }
+        if($result)
+            {
+                return response()->json(['status'=>200, 'message' => 'Data Inserted', 'data' => $result],Response::HTTP_OK);
+            } else{
+                return response()->json(['status'=>422, 'message' => 'Data Not Inserted', 'data' => []],Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
     }
 
     /**

@@ -5,6 +5,8 @@
                 <div class=" mt-2 p-4">
                     <h1 class="h1 text-center">Contact List</h1>
 
+                    <p><button id="addRow" class="btn btn-primary" @click="addNewRow()">Add Row</button></p>
+
                     <table class="table table-bordered row-border w-100" id="contactTable" >
                         <thead class="table-primary">
                             <tr>
@@ -28,7 +30,6 @@
 <script setup>
 import $ from 'jquery';
 import moment from 'moment';
-import axios from 'axios';
 import DataTable from 'datatables.net-dt';
 import { ref, onMounted } from 'vue';
 
@@ -39,45 +40,13 @@ onMounted(()=>{
     table = $('#contactTable').DataTable({
         initComplete: function () {
         },
-        processing: true,
-        serverSide: true,
+        // processing: true,
+        // serverSide: true,
         ajax:{
             url:'http://localhost:8000/api/contact-list',
             dataSource: 'data'
         },
         order: [1,'asc'],
-        dom: '<"top"i>rt<"bottom"flp><"clear">',
-        // layout:{
-        //     topStart: {
-        //         search:{
-        //             placeholder: 'Type search here'
-        //         }
-        //     },
-        //     topEnd:{
-        //         pageLength: {
-        //             menu: [10,20,30,40]
-        //         }
-        //     },
-        //     top:'info',
-        //     bottom:{
-        //         paging:{
-        //             buttons:3
-        //         },
-        //     },
-        //     bottomStart:null,
-        //     bottomEnd:null,
-        //     top2Start: function() {
-        //         let customText = document.createElement('div');
-        //         customText.innerHTML = "custom text";
-        //         return customText;
-        //     },
-        //     top2End:{
-        //         pageLength: {
-        //             menu: [10,20,30,40]
-        //         }
-        //     },
-        //     top2:'info',
-        // },
         columns:[
             { 
                 data: "name",
@@ -116,26 +85,20 @@ onMounted(()=>{
         ]
     });
 })
+
+function addNewRow()
+{
+    table.row.add({
+        'name': 'Row1',
+        'email': 'Row1',
+        'phone': 'Row1',
+        'email': 'Row1',
+        'actions': 'Row1',
+    }).draw(false);   
+}
 </script>
 <style>
 [type=button]{
          background-color: #0d6efd;
-}
-div.dt-info {
-    text-align: center;
-}
- 
-div.dt-search {
-    float: left;
-}
- 
-div.dt-length {
-    float: right;
-}
- 
-div.dt-paging {
-    clear: both;
-    text-align: center;
-    margin-top: 0.5em;
 }
 </style>

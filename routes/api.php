@@ -19,3 +19,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('contact-list', [ContactController::class, 'index']);
+Route::post('contact-add', [ContactController::class, 'store']);
