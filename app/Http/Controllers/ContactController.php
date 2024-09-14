@@ -18,6 +18,21 @@ class ContactController extends Controller
         //
         $contactList = ContactModel::select('*');
         $recordsTotal = $contactList->count();   //total records
+
+        ///search
+        $searchVal = request()->search['value'];
+        if($searchVal != ''){
+            $contactList = $contactList->where('name','like','%'.$searchVal.'%');
+            $contactList = $contactList->orWhere('email','like','%'.$searchVal.'%');
+            $contactList = $contactList->orWhere('phone','like','%'.$searchVal.'%');
+            $contactList = $contactList->orWhere('created_at','like','%'.$searchVal.'%');
+        }
+        $pageLength = request()->length;
+        if($pageLength > 0)
+        {
+            $contactList = $contactList->offset(request()->start)->limit($pageLength); ///pagination
+        }
+
         
         $recordsFiltered = $contactList->count();  // filtered coubt
         $contactList = $contactList->get();

@@ -5,7 +5,7 @@ import ContactAddComponent from '../views/ContactAddComponent.vue';
 const routes = [
     {
         path: '/',
-        component: ContactAddComponent
+        component: ContactListComponent
     }
 ];
 

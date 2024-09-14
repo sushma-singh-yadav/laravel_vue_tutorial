@@ -5,8 +5,6 @@
                 <div class=" mt-2 p-4">
                     <h1 class="h1 text-center">Contact List</h1>
 
-                    <p><button id="addRow" class="btn btn-primary" @click="addNewRow()">Add Row</button></p>
-
                     <table class="table table-bordered row-border w-100" id="contactTable" >
                         <thead class="table-primary">
                             <tr>
@@ -21,6 +19,7 @@
                            
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>
@@ -39,9 +38,15 @@ var table = ref();
 onMounted(()=>{
     table = $('#contactTable').DataTable({
         initComplete: function () {
+            let api = this.api();
+            console.log(api);
+
+            api.on('click', 'tbody td', function(){
+                api.search(this.innerHTML).draw();
+            });
         },
-        // processing: true,
-        // serverSide: true,
+        processing: true,
+        serverSide: true,
         ajax:{
             url:'http://localhost:8000/api/contact-list',
             dataSource: 'data'
@@ -86,16 +91,6 @@ onMounted(()=>{
     });
 })
 
-function addNewRow()
-{
-    table.row.add({
-        'name': 'Row1',
-        'email': 'Row1',
-        'phone': 'Row1',
-        'email': 'Row1',
-        'actions': 'Row1',
-    }).draw(false);   
-}
 </script>
 <style>
 [type=button]{
